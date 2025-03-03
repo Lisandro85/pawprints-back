@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Credentials } from 'src/credentials/credentials.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class Users {
@@ -19,4 +26,8 @@ export class Users {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToOne(() => Credentials, (credentials) => credentials.user)
+  @JoinColumn()
+  credentials: Credentials;
 }

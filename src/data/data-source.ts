@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
+import { Credentials } from 'src/credentials/credentials.entity';
 import { Users } from 'src/users/entities/user.entity';
 
 dotenv.config();
@@ -13,7 +14,8 @@ export const AppDataSource: TypeOrmModuleOptions = {
   database: process.env.DB_DBNAME,
   synchronize: true,
   logging: true,
-  entities: [Users],
+  dropSchema: false,
+  entities: [Users, Credentials],
   subscribers: [],
   migrations: [],
 };
