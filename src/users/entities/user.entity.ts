@@ -21,7 +21,7 @@ export class Users {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: false })
   birthDate: Date;
 
   @Column({ default: true })

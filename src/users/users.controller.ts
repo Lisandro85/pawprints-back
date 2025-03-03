@@ -10,24 +10,29 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Users } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  //CREAR UN NUEVOI USUARIO//
   @Post('/register')
   createUser(@Body() data: CreateUserDto) {
     return this.usersService.createUser(data);
   }
 
+  //OBTENER TODOS LOS USUARIOS//
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  getAllUsers() {
+    return this.usersService.getAllUsers();
   }
 
+  //OBTENER USUARIO POR id
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  getUserById(@Param('id') id: Users['id']) {
+    return this.usersService.getUserById(id);
   }
 
   @Patch(':id')

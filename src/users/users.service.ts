@@ -12,12 +12,12 @@ export class UsersService {
     return this.userRepository.createUser(data);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  getAllUsers() {
+    return this.userRepository.getAllUsers();
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  //OBTENER USUARIO POR ID//
+  getUserById(id: Users['id']) {
+    return this.userRepository.getUserById(id);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

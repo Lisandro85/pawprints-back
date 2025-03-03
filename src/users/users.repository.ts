@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadGatewayException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -16,36 +21,75 @@ export class UserRepository {
     private readonly credentialsRepository: Repository<Credentials>,
   ) {}
 
+  //LOGICA CREAR USUARIO//
   async createUser(data: CreateUserDto) {
-    const mailExist = await this.userRepository.findOne({
-      where: { email: data.email },
-    });
+    try {
+      const mailExist = await this.userRepository.findOne({
+        where: { email: data.email },
+      });
 
-    if (mailExist) {
-      throw new ConflictException('El email ya se encuentra registrado');
+      if (mailExist) {
+        throw new ConflictException('El email ya se encuentra registrado');
+      }
+
+      const userNameExist = await this.credentialsRepository.findOne({
+        where: { userName: data.username },
+      });
+
+      if (userNameExist) {
+        throw new ConflictException('El Nombre de usuario ya existe');
+      }
+
+      const hashPsw = await bcrypt.hash(data.password, 10);
+      const newUser = this.userRepository.create(data);
+      await this.userRepository.save(newUser);
+      const credentials = this.credentialsRepository.create({
+        userName: data.username,
+        password: hashPsw,
+        user: newUser,
+      });
+
+      await this.credentialsRepository.save(credentials);
+
+      return { message: 'Usuario creado con exito', newUser };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error del servidor',
+        error.message,
+      );
     }
+  }
 
-    const userNameExist = await this.credentialsRepository.findOne({
-      where: { userName: data.username },
-    });
+  //LOGICA OBTENER TODOS LOS USUARIOS//
 
-    if (userNameExist) {
-      throw new ConflictException('El Nombre de usuario ya existe');
+  async getAllUsers() {
+    try {
+      return this.userRepository.find();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error intenro del servidor',
+        error.message,
+      );
     }
+  }
 
-    const hashPsw = await bcrypt.hash(data.password, 10);
+  //LOGICA OBTENER USUARIO POR ID//
 
-    const newUser = this.userRepository.create(data);
-    await this.userRepository.save(newUser);
+  async getUserById(id: Users['id']) {
+    try {
+      const userExist = await this.userRepository.findOne({
+        where: { id: id },
+      });
 
-    const credentials = this.credentialsRepository.create({
-      userName: data.username,
-      password: hashPsw,
-      user: newUser,
-    });
-
-    await this.credentialsRepository.save(credentials);
-
-    return { message: 'Usuario creado con exito', newUser };
+      if (!userExist) {
+        throw new BadGatewayException('Usuario inexistente');
+      }
+      return userExist;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error interno del servidor',
+        error.message,
+      );
+    }
   }
 }
