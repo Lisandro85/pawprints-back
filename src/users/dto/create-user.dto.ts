@@ -1,6 +1,10 @@
-import { IsBoolean, IsDate, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsDate, IsEmail, IsString, IsUUID } from 'class-validator';
 
 export class CreateUserDto {
+  @IsUUID()
+  id: string;
+
   @IsString()
   name: string;
 
@@ -8,9 +12,12 @@ export class CreateUserDto {
   lastName: string;
 
   @IsString()
+  @IsEmail()
   email: string;
+
   @IsDate()
   birthDate: Date;
+
   @IsBoolean()
   isActive: boolean;
 }
