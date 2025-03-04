@@ -12,6 +12,9 @@ export class Credentials {
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
+  @Column({ default: 'user' })
+  role: string;
+
   @OneToOne(() => Users, (user) => user.credentials)
   user: Users;
 }

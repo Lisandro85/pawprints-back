@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Users } from './entities/user.entity';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/decorators/enum.role';
 
 @Controller('users')
 export class UsersController {
@@ -23,13 +27,16 @@ export class UsersController {
   }
 
   //OBTENER TODOS LOS USUARIOS//
+  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
   @Get()
   getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
   //OBTENER USUARIO POR id
-
+  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
   @Get(':id')
   getUserById(@Param('id') id: Users['id']) {
     return this.usersService.getUserById(id);
