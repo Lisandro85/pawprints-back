@@ -16,7 +16,7 @@ import { Users } from './entities/user.entity';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  //CREAR UN NUEVOI USUARIO//
+  //CREAR UN NUEVO USUARIO//
   @Post('/register')
   createUser(@Body() data: CreateUserDto) {
     return this.usersService.createUser(data);

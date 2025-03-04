@@ -8,13 +8,16 @@ import { Users } from './entities/user.entity';
 export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  //CREAR UN NUEVO USUARIO
   createUser(data: CreateUserDto) {
     return this.userRepository.createUser(data);
   }
 
+  //OBTENER TODOS LOS USUARIOS
   getAllUsers() {
     return this.userRepository.getAllUsers();
   }
+
   //OBTENER USUARIO POR ID//
   getUserById(id: Users['id']) {
     return this.userRepository.getUserById(id);
