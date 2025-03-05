@@ -13,7 +13,7 @@ export const AppDataSource: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DBNAME,
   synchronize: true,
-  logging: true,
+  logging: false,
   dropSchema: false,
   entities: [Users, Credentials],
   subscribers: [],
