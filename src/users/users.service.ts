@@ -23,8 +23,9 @@ export class UsersService {
     return this.userRepository.getUserById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  //BORRADO LOGICO USUARIO
+  logicDeleteUser(id: string) {
+    return this.userRepository.logicDeleteUser(id);
   }
 
   remove(id: number) {

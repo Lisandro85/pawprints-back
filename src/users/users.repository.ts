@@ -1,5 +1,5 @@
 import {
-  BadGatewayException,
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -82,7 +82,7 @@ export class UserRepository {
       });
 
       if (!userExist) {
-        throw new BadGatewayException('Usuario inexistente');
+        throw new BadRequestException('Usuario inexistente');
       }
       return userExist;
     } catch (error) {
@@ -91,5 +91,20 @@ export class UserRepository {
         error.message,
       );
     }
+  }
+
+  //LOGICA BORRADO LOGICO DE USUARIO
+
+  async logicDeleteUser(id: string) {
+    const userExist = await this.userRepository.findOne({ where: { id: id } });
+    if (!userExist) {
+      throw new BadRequestException('Usuario inexistente');
+    }
+
+    userExist.isActive = false;
+
+    await this.userRepository.update(id, userExist);
+
+    return { message: 'Usuario borrado correctamente' };
   }
 }

@@ -42,13 +42,9 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  //BORRADO LOGICO DE UN USUARIO
+  @Patch('/delete/:id')
+  logicDeleteUser(@Param('id') id: Users['id']) {
+    return this.usersService.logicDeleteUser(id);
   }
 }
