@@ -1,14 +1,17 @@
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   MinLength,
 } from 'class-validator';
 
 export class CreateUserDto {
+  @IsOptional()
   @IsUUID()
   id: string;
 
@@ -19,12 +22,14 @@ export class CreateUserDto {
   lastName: string;
 
   @IsString()
-  @IsEmail()
+  @IsEmail({}, { message: 'El email debe tener un formato válido' })
   email: string;
 
-  @IsDate()
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: 'La fecha de nacimiento no es válida' })
   birthDate: Date;
 
+  @IsOptional()
   @IsBoolean()
   isActive: boolean;
 
