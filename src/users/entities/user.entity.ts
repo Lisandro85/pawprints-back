@@ -1,8 +1,10 @@
+import { Cloudinary } from 'src/cloudinary/cloudinary.entity';
 import { Credentials } from 'src/credentials/credentials.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,4 +32,7 @@ export class Users {
   @OneToOne(() => Credentials, (credentials) => credentials.user)
   @JoinColumn()
   credentials: Credentials;
+
+  @OneToMany(() => Cloudinary, (post) => post.user)
+  posts: Cloudinary[];
 }

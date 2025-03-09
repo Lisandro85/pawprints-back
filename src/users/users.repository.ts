@@ -31,14 +31,6 @@ export class UserRepository {
       throw new ConflictException('El email ya se encuentra registrado');
     }
 
-    const userNameExist = await this.credentialsRepository.findOne({
-      where: { userName: data.username },
-    });
-
-    if (userNameExist) {
-      throw new ConflictException('El Nombre de usuario ya existe');
-    }
-
     const hashPsw = await bcrypt.hash(data.password, 10);
     const newUser = this.userRepository.create(data);
     await this.userRepository.save(newUser);
