@@ -1,6 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMessageDto } from './dto/create-message.dto';
-import { UpdateMessageDto } from './dto/update-message.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
 import { Repository } from 'typeorm';
@@ -25,7 +23,9 @@ export class MessageService {
       message,
       subject,
     });
-    return this.messageRepository.save(newMessage);
+    const savedMessage = await this.messageRepository.save(newMessage);
+
+    return savedMessage;
   }
 
   async getMessagesForUser(userId: string) {
@@ -35,7 +35,25 @@ export class MessageService {
       order: { create_At: 'DESC' },
     });
   }
-  async markAsRead(messageId: string) {
-    return this.messageRepository.update(messageId, { isRead: true });
+
+  async getMessagesCountForUser(userId: string) {
+    const count = await this.messageRepository.count({
+      where: { receiver: { id: userId }, isRead: false },
+    });
+
+    return count;
+  }
+
+  async changeIsRead(messageId: string) {
+    const messageExist = await this.messageRepository.findOne({
+      where: { id: messageId },
+    });
+    if (!messageExist) {
+      throw new BadRequestException('Message not found');
+    }
+
+    messageExist.isRead = true;
+    await this.messageRepository.save(messageExist);
+    return { message: 'Message marked as read successfully' };
   }
 }

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 
@@ -28,8 +20,14 @@ export class MessageController {
   getMessages(@Param('userId') userId: string) {
     return this.messageService.getMessagesForUser(userId);
   }
-  @Patch('read/:id')
-  markAsRead(@Param('id') messageId: string) {
-    return this.messageService.markAsRead(messageId);
+
+  @Get('receiver/:userId')
+  getMessagesCountForUser(@Param('userId') userId: string) {
+    return this.messageService.getMessagesCountForUser(userId);
+  }
+
+  @Patch('receiver/:messageId')
+  changeIsRead(@Param('messageId') messageId: string) {
+    return this.messageService.changeIsRead(messageId);
   }
 }
