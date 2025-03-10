@@ -2,6 +2,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { Cloudinary } from 'src/cloudinary/cloudinary.entity';
 import { Credentials } from 'src/credentials/credentials.entity';
+import { Message } from 'src/message/entities/message.entity';
 import { Users } from 'src/users/entities/user.entity';
 
 dotenv.config();
@@ -16,7 +17,7 @@ export const AppDataSource: TypeOrmModuleOptions = {
   synchronize: true,
   logging: false,
   dropSchema: false,
-  entities: [Users, Credentials, Cloudinary],
+  entities: [Users, Credentials, Cloudinary, Message],
   subscribers: [],
   migrations: [],
 };

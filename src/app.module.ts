@@ -5,6 +5,7 @@ import { AppDataSource } from './data-config/data-source';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     AuthModule,
     AuthModule,
     CloudinaryModule,
+    MessageModule,
   ],
   controllers: [],
   providers: [],

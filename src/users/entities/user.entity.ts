@@ -1,5 +1,6 @@
 import { Cloudinary } from 'src/cloudinary/cloudinary.entity';
 import { Credentials } from 'src/credentials/credentials.entity';
+import { Message } from 'src/message/entities/message.entity';
 import {
   Column,
   Entity,
@@ -35,4 +36,10 @@ export class Users {
 
   @OneToMany(() => Cloudinary, (post) => post.user)
   posts: Cloudinary[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  sentMessages: Message[];
+
+  @OneToMany(() => Message, (message) => message.receiver)
+  receivedMessages: Message[];
 }
