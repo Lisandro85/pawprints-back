@@ -12,6 +12,9 @@ export class Cloudinary {
   @Column({ type: 'text' })
   description: string;
 
+  @Column({ type: 'text' })
+  adress: string;
+
   @ManyToOne(() => Users, (user) => user.posts, { onDelete: 'CASCADE' })
   user: Users;
 }

@@ -18,6 +18,12 @@ export class Message {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   create_At: Date;
 
+  @Column({ default: false })
+  deletedBySender: boolean;
+
+  @Column({ default: false })
+  deletedByReceiver: boolean;
+
   @ManyToOne(() => Users, (user) => user.sentMessages, { onDelete: 'CASCADE' })
   sender: Users;
 

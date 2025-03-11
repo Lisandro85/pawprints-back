@@ -37,11 +37,11 @@ export class MessageService {
   }
 
   async getMessagesCountForUser(userId: string) {
-    const count = await this.messageRepository.count({
+    const message = await this.messageRepository.find({
       where: { receiver: { id: userId }, isRead: false },
     });
 
-    return count;
+    return message;
   }
 
   async changeIsRead(messageId: string) {

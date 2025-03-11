@@ -17,6 +17,7 @@ export class UploadService {
     file: Express.Multer.File,
     userId: string,
     description: string,
+    adress: string,
   ) {
     return new Promise((resolve, reject) => {
       const stream = cloudinary.v2.uploader.upload_stream(
@@ -36,6 +37,7 @@ export class UploadService {
               urlImg: result?.secure_url,
               description,
               user,
+              adress,
             });
             await this.cloudinaryRepository.save(newCloudinaryRecord);
             resolve(result);

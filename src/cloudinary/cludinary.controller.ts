@@ -37,7 +37,7 @@ export class UploadController {
   )
   async uploadImage(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: { userId: string; description: string },
+    @Body() body: { userId: string; description: string; adress: string },
   ) {
     try {
       if (!file) {
@@ -47,6 +47,7 @@ export class UploadController {
         file,
         body.userId,
         body.description,
+        body.adress,
       );
 
       return { message: 'Imagen subida y post creado con éxito', result };
