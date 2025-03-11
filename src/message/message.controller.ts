@@ -30,4 +30,12 @@ export class MessageController {
   changeIsRead(@Param('messageId') messageId: string) {
     return this.messageService.changeIsRead(messageId);
   }
+
+  @Patch('delete')
+  async deleteMessage(
+    @Body() deleteMessageDto: { messageId: string; userId: string },
+  ) {
+    const { messageId, userId } = deleteMessageDto;
+    return await this.messageService.deleteMessage(messageId, userId);
+  }
 }

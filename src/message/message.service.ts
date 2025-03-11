@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
 import { Repository } from 'typeorm';
@@ -55,5 +60,32 @@ export class MessageService {
     messageExist.isRead = true;
     await this.messageRepository.save(messageExist);
     return { message: 'Message marked as read successfully' };
+  }
+
+  async deleteMessage(messageId: string, userId: string): Promise<string> {
+    const message = await this.messageRepository.findOne({
+      where: { id: messageId },
+      relations: ['sender', 'receiver'],
+    });
+
+    if (!message) {
+      throw new NotFoundException('Mensaje no encontrado');
+    }
+
+    if (message.sender.id === userId) {
+      message.deletedBySender = true;
+    } else if (message.receiver.id === userId) {
+      message.deletedByReceiver = true;
+    } else {
+      throw new ForbiddenException('No puedes borrar este mensaje');
+    }
+
+    if (message.deletedBySender && message.deletedByReceiver) {
+      await this.messageRepository.remove(message);
+      return 'Mensaje eliminado completamente';
+    }
+
+    await this.messageRepository.save(message);
+    return 'Mensaje marcado como borrado para este usuario';
   }
 }
