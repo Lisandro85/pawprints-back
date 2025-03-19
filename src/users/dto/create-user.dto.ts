@@ -7,6 +7,8 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  Matches,
+  MaxLength,
   MinLength,
 } from 'class-validator';
 
@@ -16,9 +18,15 @@ export class CreateUserDto {
   id: string;
 
   @IsString()
+  @Matches(/^[A-Za-z]+$/, {
+    message: 'El nombre no debe contener números ni espacios.',
+  })
   name: string;
 
   @IsString()
+  @Matches(/^[A-Za-z]+$/, {
+    message: 'El apellido no debe contener números ni espacios.',
+  })
   lastName: string;
 
   @IsString()
@@ -34,7 +42,19 @@ export class CreateUserDto {
   isActive: boolean;
 
   @IsString()
-  @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
+  @MinLength(8, { message: 'Minimo 8 caracteres' })
+  @MaxLength(20, {
+    message: 'Menor a 20 caracteres',
+  })
+  @Matches(/[A-Z]/, {
+    message: 'Al menos una letra mayúscula',
+  })
+  @Matches(/\d/, {
+    message: 'Al menos un número',
+  })
+  @Matches(/[@$!%*?&]/, {
+    message: 'Al menos un carácter especial (@$!%*?&)',
+  })
   password: string;
 
   @IsString()

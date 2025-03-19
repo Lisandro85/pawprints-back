@@ -15,7 +15,13 @@ async function bootstrap() {
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       allowedHeaders: 'Content-Type, Authorization',
     });
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    );
     await app.listen(PORT);
     console.log(`Server listen on port: ${PORT} 🚀`);
   } catch (error) {

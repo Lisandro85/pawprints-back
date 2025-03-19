@@ -34,11 +34,13 @@ export class MessageService {
   }
 
   async getMessagesForUser(userId: string) {
-    return this.messageRepository.find({
+    const messages = await this.messageRepository.find({
       where: [{ sender: { id: userId } }, { receiver: { id: userId } }],
       relations: ['sender', 'receiver'],
       order: { create_At: 'DESC' },
     });
+
+    return messages;
   }
 
   async getMessagesCountForUser(userId: string) {
