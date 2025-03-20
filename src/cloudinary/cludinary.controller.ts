@@ -6,9 +6,12 @@ import {
   BadRequestException,
   Body,
   Get,
+  Delete,
+  Param,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './cloudinary.service';
+import { Cloudinary } from './cloudinary.entity';
 
 @Controller('upload')
 export class UploadController {
@@ -58,5 +61,10 @@ export class UploadController {
   @Get()
   getAllImages() {
     return this.uploadService.getAllImages();
+  }
+
+  @Delete('delete/:id')
+  deletePost(@Param('id') id: Cloudinary['id']) {
+    return this.uploadService.deletePost(id);
   }
 }

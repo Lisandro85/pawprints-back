@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as cloudinary from 'cloudinary';
 import * as streamifier from 'streamifier';
@@ -54,5 +54,16 @@ export class UploadService {
   async getAllImages() {
     const post = await this.cloudinaryRepository.find({ relations: ['user'] });
     return post;
+  }
+  async deletePost(id: string) {
+    const postExist = await this.cloudinaryRepository.findOne({
+      where: { id: id },
+    });
+    if (!postExist) {
+      throw new BadRequestException('Post no encontrado');
+    }
+
+    await this.cloudinaryRepository.delete(postExist);
+    return { message: 'Post eliminado con exito' };
   }
 }
